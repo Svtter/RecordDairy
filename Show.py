@@ -45,7 +45,7 @@ class Item:
         '''
         剩余的时间
         '''
-        return (datetime.datetime.now() - self.startDate).days
+        return deltaDays(datetime.datetime.now(), self.startDate)
 
     def showStatus(self):
         '''
@@ -75,6 +75,31 @@ class Item:
         应阅读到的页数
         '''
         return self.numofDays() * self.frequent + self.curPage
+
+
+def deltaDays(day1, day2):
+    '''
+    计算两个日期的差值
+
+    >>> deltaDays(day1, day2)
+    3
+
+    '''
+    return (day1-day2).days
+    pass
+
+
+def str2datetime(strr):
+    '''
+    由字符串转换到datetime类
+
+
+    >>>t_str = '2012-03-05 16:26:23'
+    >>>d = datetime.datetime.strptime(t_str, '%Y-%m-%d %H:%M:%S')
+
+    '''
+    d = datetime.datetime.strptime(strr, '%Y-%m-%d')
+    return d
 
 
 # 算法类，可以参数化

@@ -4,7 +4,11 @@
 import ConfigParser
 
 config = ConfigParser.ConfigParser()
-filename = raw_input("Input file name:")
-config.read(filename)
+config.read('config.ini')
 
-print config.get("global", "ip")
+l = []
+
+for item in config.sections():
+    options = config.options(item)
+    for option in options:
+        print option, ':', config.get(item, option)
