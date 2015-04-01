@@ -15,21 +15,21 @@ class Item:
     '''
     项目基类，用于所有任务项的集成
     '''
-    def __init__(self, startDate, frequent, gross,
-                 curPage, name, **kw):
+    def __init__(self, startdate='2015-01-01', frequent=10, gross=100,
+                 curpage=10, name='Item', **kw):
         '''
         条目基础类
 
-        startDate = datetime.datetime(2015, x, x)
-        item = new Item(startDate, 30, 30, 400, 'Algorithm', curPage = 30)
+        startdate = datetime.datetime(2015, x, x)
+        item = new Item(startdate, 30, 30, 400, 'Algorithm', curpage = 30)
 
         '''
-        self.startDate = startDate
+        self.startdate = str2datetime(startdate)
         self.frequent = frequent
-        self.curPage = curPage
+        self.curpage = curpage
         self.gross = gross
         self.name = name
-        self.subItem = kw.get('subItem')
+        self.subitem = kw.get('subitem')
 
     def delay(self, day):
         '''
@@ -39,13 +39,13 @@ class Item:
         item.delay(3)
         静态的初始化，目前没有效果，仅能单纯计算
         '''
-        self.startDate = self.startDate + datetime.timedelta(day)
+        self.startdate = self.startdate + datetime.timedelta(day)
 
     def numofDays(self):
         '''
         剩余的时间
         '''
-        return deltaDays(datetime.datetime.now(), self.startDate)
+        return deltaDays(datetime.datetime.now(), self.startdate)
 
     def showStatus(self):
         '''
@@ -53,7 +53,7 @@ class Item:
         '''
         print "-----------------------------------------------"
         print "Name: ", self.name
-        print "开始时间:", self.startDate
+        print "开始时间:", self.startdate
         print "结束时间:", self.endDate()
         print "当前应阅读页数:", self.shouldPage()
         percent = (self.shouldPage() / float(self.gross) * 100)
@@ -67,14 +67,14 @@ class Item:
         2015-03-13
 
         '''
-        rest = (self.gross - self.curPage) / self.frequent
-        return self.startDate + datetime.timedelta(rest)
+        rest = (self.gross - self.curpage) / self.frequent
+        return self.startdate + datetime.timedelta(rest)
 
     def shouldPage(self):
         '''
         应阅读到的页数
         '''
-        return self.numofDays() * self.frequent + self.curPage
+        return self.numofDays() * self.frequent + self.curpage
 
 
 def deltaDays(day1, day2):
@@ -110,17 +110,17 @@ class Algorithm(Item):
     没有配置文件，暂时写在类中
     '''
     wholePage = 480
-    curPage = 37
+    curpage = 37
     frequent = 10
-    startDate = datetime.datetime(2015, 3, 17)
+    startdate = "2015-03-17"
 
     @staticmethod
     def getstandardAlgorithm():
         '''
         返回普通变量
         '''
-        return Algorithm(Algorithm.startDate, Algorithm.frequent,
-                         Algorithm.wholePage, Algorithm.curPage, 'Algorithm')
+        return Algorithm(Algorithm.startdate, Algorithm.frequent,
+                         Algorithm.wholePage, Algorithm.curpage, 'Algorithm')
 
 
 # 日常检查类
@@ -149,7 +149,8 @@ class DailyCheck:
             print "It's Sunday, you might need to write summary."
 
 # main
-item = []
-item.append(Algorithm.getstandardAlgorithm())
-DailyCheck.Show(item)
-DailyCheck.dayCheck()
+if(__name__ == '__main__'):
+    item = []
+    item.append(Algorithm.getstandardAlgorithm())
+    DailyCheck.Show(item)
+    DailyCheck.dayCheck()
